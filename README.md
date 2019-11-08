@@ -2,6 +2,7 @@
 A package used to deploy a lambda function into AWS CodeStar via CDK.
 
 ###Description
+
 This package creates a lambda function, accessible through an API Gateway, editable via commits to AWS CodeCommit and fully monitored using AWS CodeStar. 
 The function uses gradual code deployment Linear10PercentEvery3Minutes, which means any commits will gradually be deployed and 10 percent of the load will be sent to the new deployment every 3 minutes. If you want to change that, edit the line in 
 
@@ -16,14 +17,17 @@ All that can also be changed by editing the template.yml file.
 Deploying this package creates 4 CloudFormation stacks in total.
 
 The first one uploads the files toolchain.yml and source.zip into AWS S3, in order to be accessed by CodeStar.
+
 The second stack is the CDK stack, that creates the CodeStar project.
-The third stack is the CodeStar stack, which specifies, what the Project should create. It's contents can be edited by editing
+
+The third stack is the CodeStar stack, which specifies, what the project should create. It's contents can be edited by editing
 
 ```aws_codestar_cdk/files/toolchain.yml``` 
 
 The fourth stack is the lambda function stack, which can be edited by editing the template.yml file.
 
 ###Prerequisites
+
 In order to operate the package, you must first install it, using
  
 ```pip install aws-codestar-cdk```
@@ -33,11 +37,16 @@ You also need to have an AWS account with a confugured AWS CLI. Here's how to do
 https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html
 
 ### How to use
-Install the package by pip using 
-```pip install aws-codestar-cdk```
-Afterwards, import the main file into your project and call the Main classes constructor.
+
+Import the main file into your project and call the Main classes constructor.
+
 The arguments for the constructor are the scope, your project name, list of subnet IDs where the function should be deployed and list of security group IDs for the function.
-It should look something like this:
+
+The subnet IDs specify, what subnets your function will be deployed to. Make sure they have NAT gateways, in order to access the internet. Read more:
+
+https://docs.amazonaws.cn/en_us/vpc/latest/userguide/what-is-amazon-vpc.html
+
+Your code should look something like this:
 ```from aws_cdk import core
 from aws_codestar_cdk.main import Main
 
