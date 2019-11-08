@@ -20,7 +20,7 @@ setup(
     author='Deividas Tamkus',
     author_email='dtamkus@gmail.com',
     keywords='AWS CDK CodeStar',
-    url='https://github.com/laimonassutkus/GitDependencyPython.git',
+    url='https://github.com/deitam/AwsCodeStarCdk.git',
     classifiers=[
         'Programming Language :: Python :: 3',
         'Operating System :: OS Independent',
