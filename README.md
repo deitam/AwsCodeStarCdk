@@ -1,7 +1,7 @@
 ## AWS CodeStar CDK
 A package used to deploy a lambda function into AWS CodeStar via CDK.
 
-###Description
+### Description
 
 This package creates a lambda function, accessible through an API Gateway, editable via commits to AWS CodeCommit and fully monitored using AWS CodeStar. 
 The function uses gradual code deployment Linear10PercentEvery3Minutes, which means any commits will gradually be deployed and 10 percent of the load will be sent to the new deployment every 3 minutes. If you want to change that, edit the line in 
@@ -26,7 +26,7 @@ The third stack is the CodeStar stack, which specifies, what the project should 
 
 The fourth stack is the lambda function stack, which can be edited by editing the template.yml file.
 
-###Prerequisites
+### Prerequisites
 
 In order to operate the package, you must first install it, using
  
