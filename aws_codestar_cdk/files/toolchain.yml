@@ -12,6 +12,14 @@ Parameters:
   MySecurityGroupIds:
     Type: String
     Description: Security group IDs for created lambda function
+  EventType:
+    Type: String
+    Description: Enter None, Api or Schedule, event to invoke your function. Default is None
+  CronExpression:
+    Type: String
+    Description: Cron expression for lambda schedule
+    Default: "cron(0 12 * * ? *)"
+
 
 Resources:
   CodeCommitRepo:
@@ -109,6 +117,7 @@ Resources:
             - iam:*
             - apigateway:*
             - ec2:*
+            - events:*
             Effect: Allow
             Resource: '*'
         PolicyName: CloudFormationRolePolicy
@@ -274,7 +283,7 @@ Resources:
             RoleArn: !GetAtt 'CloudFormationTrustRole.Arn'
             StackName: !Sub "awscodestar-${ProjectId}-lambda"
             # These are the parameters that will be set in your AWS CloudFormation stack.
-            ParameterOverrides: !Sub '{"ProjectId":"${ProjectId}", "MySubnetIds":"${MySubnetIds}", "MySecurityGroupIds":"${MySecurityGroupIds}"}'
+            ParameterOverrides: !Sub '{"ProjectId":"${ProjectId}", "MySubnetIds":"${MySubnetIds}", "MySecurityGroupIds":"${MySecurityGroupIds}", "EventType":"${EventType}", "CronExpression":"${CronExpression}"}'
             # Our sample AWS CodeBuild project uses the following yml file to run a build, 
             # and then AWS CodeBuild places the file into the build artifact.
             # Modify this line to point to a different yml file you want AWS CodeBuild to use.

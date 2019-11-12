@@ -3,7 +3,7 @@ A package used to deploy a lambda function into AWS CodeStar via CDK.
 
 ### Description
 
-This package creates a lambda function, accessible through an API Gateway, editable via commits to AWS CodeCommit and fully monitored using AWS CodeStar. 
+This package creates a lambda function, editable via commits to AWS CodeCommit and fully monitored using AWS CodeStar.
 The function uses gradual code deployment Linear10PercentEvery3Minutes, which means any commits will gradually be deployed and 10 percent of the load will be sent to the new deployment every 3 minutes. If you want to change that, edit the line in 
 
 ```aws_codestar_cdk/files/source.zip/template.yml```
@@ -40,11 +40,24 @@ https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html
 
 Import the main file into your project and call the Main classes constructor.
 
-The arguments for the constructor are the scope, your project name, list of subnet IDs where the function should be deployed and list of security group IDs for the function.
+The arguments for the constructor are the scope, your project name, list of subnet IDs where the function should be deployed, list of security group IDs for the function, function invocation event type and event type arguments.
 
 The subnet IDs specify, what subnets your function will be deployed to. Make sure they have NAT gateways, in order to access the internet. Read more:
 
 https://docs.amazonaws.cn/en_us/vpc/latest/userguide/what-is-amazon-vpc.html
+
+Function invocation event type can be "Api", "Schedule" or "None"
+
+If the invocation type is schedule, argument schedule_expression is also required.
+
+Is can be either:
+rate(x units), meaning your function will be called every x units.
+e.g. rate(5 minutes), in which case the function will be invoked every 5 minutes.
+
+cron(Minutes Hours Day-of-month Month Day-of-week Year)
+e.g. cron(0 0 * * ? *), which would mean, that the function will be invoked every day at midnight.
+
+More info: https://docs.aws.amazon.com/lambda/latest/dg/tutorial-scheduled-events-schedule-expressions.html
 
 Your code should look something like this:
 ```from aws_cdk import core
@@ -52,7 +65,7 @@ from aws_codestar_cdk.main import Main
 
 app = core.App()
 
-main = Main(app, 'project-name', ['subnet-1', 'subnet-2'], ['sg-1', 'sg-2'])
+main = Main(app, 'project-name', ['subnet-1', 'subnet-2'], ['sg-1', 'sg-2'], event_type="Schedule", schedule_expression="cron(0 0 * * ? *)")
 
 app.synth()
 ```
