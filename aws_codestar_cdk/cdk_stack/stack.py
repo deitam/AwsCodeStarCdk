@@ -42,8 +42,8 @@ class CodeStarStack(core.Stack):
         }
 
         if event_type == 'Schedule':
-            cron_expression = params.lambda_type_params.cron_expression
-            stack_parameters["CronExpression"] = cron_expression
+            schedule_expression = params.lambda_type_params.schedule_expression
+            stack_parameters["CronExpression"] = schedule_expression
 
         AwsCustomResource(self, "CreateProject",
                           on_create={
