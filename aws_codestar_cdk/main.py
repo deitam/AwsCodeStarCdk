@@ -7,9 +7,9 @@ from aws_cdk import core
 
 class LambdaCodeStar:
 
-    def __init__(self, scope: core.Construct, project_name: str, subnet_ids: List[str], security_group_ids: List[str], event_type: str = 'None', cron_expression: Optional[str] = None):
+    def __init__(self, scope: core.Construct, project_name: str, subnet_ids: List[str], security_group_ids: List[str], event_type: str = 'None', **kwargs):
         bucket_stack = DeploymentBucketStack(scope, '{}-bucket-stack'.format(project_name))
-        parameters = CodeStarLambdaParameters(project_name, bucket_stack.get_bucket_name(), subnet_ids, security_group_ids, event_type, cron_expression)
+        parameters = CodeStarLambdaParameters(project_name, bucket_stack.get_bucket_name(), subnet_ids, security_group_ids, event_type, kwargs)
         self.__stack = CodeStarStack(scope, '{}-stack'.format(project_name), parameters)
         self.__stack.add_dependency(bucket_stack)
 
