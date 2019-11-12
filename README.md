@@ -51,6 +51,7 @@ Function invocation event type can be "Api", "Schedule" or "None"
 If the invocation type is schedule, argument schedule_expression is also required.
 
 Is can be either:
+
 rate(x units), meaning your function will be called every x units.
 e.g. rate(5 minutes), in which case the function will be invoked every 5 minutes.
 
