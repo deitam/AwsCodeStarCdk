@@ -1,13 +1,6 @@
 from typing import List, Optional
 
 
-class CodeStarLambdaParameters:
-    def __init__(self, project_name: str, bucket_name, subnet_ids: List[str], security_group_ids: List[str], event_type: str, kwargs):
-        self.lambda_type_params = LambdaTypeParameters(event_type, kwargs)
-        self.deployment_params = DeploymentParameters(project_name, bucket_name)
-        self.vpc_params = VpcParameters(subnet_ids, security_group_ids)
-
-
 class VpcParameters:
     def __init__(self, subnet_ids: List[str], security_group_ids: List[str]):
         """
@@ -72,3 +65,10 @@ class DeploymentParameters:
         """
         self.project_name = project_name
         self.bucket_name = bucket_name
+
+
+class CodeStarLambdaParameters:
+    def __init__(self, vpc_params: VpcParameters, deployment_params: LambdaTypeParameters, lambda_type_params: DeploymentParameters):
+        self.lambda_type_params = lambda_type_params
+        self.deployment_params = deployment_params
+        self.vpc_params = vpc_params

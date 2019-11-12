@@ -40,7 +40,7 @@ https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html
 
 Import the main file into your project and call the Main classes constructor.
 
-The arguments for the constructor are the scope, your project name, list of subnet IDs where the function should be deployed, list of security group IDs for the function, function invocation event type and event type arguments.
+The arguments for the constructor are the scope, your project name, name of s3 bucket to put function source code and toolchain to, list of subnet IDs where the function should be deployed, list of security group IDs for the function, function invocation event type and event type arguments.
 
 The subnet IDs specify, what subnets your function will be deployed to. Make sure they have NAT gateways, in order to access the internet. Read more:
 
@@ -60,13 +60,24 @@ e.g. cron(0 0 * * ? *), which would mean, that the function will be invoked ever
 
 More info: https://docs.aws.amazon.com/lambda/latest/dg/tutorial-scheduled-events-schedule-expressions.html
 
+Parameters are split into 3 groups - VPC parameters, deployment parameters and Lambda type parameters.
+VPC parameters include subnet IDs and security group IDs.\n
+Lambda type parameters include event type and optionally schedule expressions.\n
+Deployment parameters include your project name and bucket name.
+
 Your code should look something like this:
 ```from aws_cdk import core
-from aws_codestar_cdk.main import Main
+from aws_codestar_cdk.main import LambdaCodeStar
+from aws_codestar_cdk.cdk_stack.parameters import VpcParameters, LambdaTypeParameters, DeploymentParameters
 
 app = core.App()
 
-main = Main(app, 'project-name', ['subnet-1', 'subnet-2'], ['sg-1', 'sg-2'], event_type="Schedule", schedule_expression="cron(0 0 * * ? *)")
+deployment_params = DeploymentParameters('project_name', 'bucket_name')
+lambda_params = LambdaTypeParameters(event_type="Schedule", schedule_expression="cron(0 0 * * ? *)")
+vpc_params = VpcParameters(['subnet-1', 'subnet-2'], ['sg-1'])
+
+main = LambdaCodeStar(app, vpc_params, deployment_params, lambda_params)
 
 app.synth()
+
 ```
