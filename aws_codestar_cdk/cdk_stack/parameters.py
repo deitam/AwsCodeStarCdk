@@ -2,7 +2,7 @@ from typing import List, Optional
 
 
 class CodeStarLambdaParameters:
-    def __init__(self, project_name: str, bucket_name, subnet_ids: List[str], security_group_ids: List[str], event_type: str, **kwargs):
+    def __init__(self, project_name: str, bucket_name, subnet_ids: List[str], security_group_ids: List[str], event_type: str, kwargs):
         self.lambda_type_params = LambdaTypeParameters(event_type, kwargs)
         self.deployment_params = DeploymentParameters(project_name, bucket_name)
         self.vpc_params = VpcParameters(subnet_ids, security_group_ids)
