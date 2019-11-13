@@ -21,7 +21,7 @@ class VpcParameters:
 
 
 class LambdaTypeParameters:
-    def __init__(self, event_type: str, kwargs):
+    def __init__(self, event_type: str, **kwargs):
         """
         Parameters, describing your function invocation event.
 
