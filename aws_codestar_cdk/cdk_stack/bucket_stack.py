@@ -15,6 +15,6 @@ class DeploymentBucketStack(core.Stack):
         path = os.path.join(dir_path, '..', 'files')
         deployment_files = aws_s3_deployment.Source.asset(path)
 
-        self.__bucket = aws_s3.Bucket(self, 'DeploymentBucket', access_control=aws_s3.BucketAccessControl.AWS_EXEC_READ, bucket_name=bucket_name)
+        self.__bucket = aws_s3.Bucket(self, 'DeploymentBucket', access_control=aws_s3.BucketAccessControl.PRIVATE, bucket_name=bucket_name)
         aws_s3_deployment.BucketDeployment(self, 'Deployment', destination_bucket=self.__bucket, sources=[deployment_files])
 
